@@ -4,18 +4,19 @@
   <head lang = "pt-br">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <script src="jquery-3.1.1.min.js"></script>
+    <script src="../lib/graph.js"></script>
   </head>
   <body>
     <form>
       <table>
         <tr>
           <td>Arquivo:</td>
-          <td><input type="file" id="arquivo" name="arquivo" /></td>
+          <td><input type="file" id="files" name="files[]" /></td>
         </tr>
         <tr>
           <td>Tipo:</td>
           <td>
-            <select id="tipo" name="tipo">
+            <select id="type" name="type">
               <option value="0">Matriz de Adjacência</option>
               <option value="1">Lista de Adjacência</option>
             </select>
@@ -23,8 +24,34 @@
         </tr>
       </table>
       <br>
-      <input type="button" value="Carregar Grafo " />
+      <input type="button" value="Carregar Grafo" onclick="loadGraph()" />
 
     </form>
+
+    <output id="list"></output>
+
+    <script>
+      function handleFileSelect(evt)
+      {
+        var files = evt.target.files; // FileList object
+
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        f = files[0];
+        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, última modificação: ',
+                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+      }
+
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+      var graph;
+
+      function loadGraph()
+      {
+        graph = new Graph($('#files').val(),$('#type').val())
+      }
+    </script>
   </body>
 </html>
