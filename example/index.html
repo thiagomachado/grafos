@@ -4,14 +4,14 @@
   <head lang = "pt-br">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <script src="jquery-3.1.1.min.js"></script>
-    <script src="../lib/graph.js"></script>
+    <script src="../lib/graph.js"></script>    
   </head>
   <body>
     <form>
       <table>
         <tr>
           <td>Arquivo:</td>
-          <td><input type="file" id="files" name="files[]" /></td>
+          <td><input type="file" accept='text/plain' id="files" name="files[]" /></td>
         </tr>
         <tr>
           <td>Tipo:</td>
@@ -34,7 +34,7 @@
       function handleFileSelect(evt)
       {
         var files = evt.target.files; // FileList object
-
+        console.log(files);
         // files is a FileList of File objects. List some properties.
         var output = [];
         f = files[0];
@@ -50,7 +50,7 @@
 
       function loadGraph()
       {
-        graph = new Graph($('#files').val(),$('#type').val())
+        graph = new Graph($('#files').prop('files')[0],$('#type').val())
       }
     </script>
   </body>
