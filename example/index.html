@@ -25,10 +25,31 @@
       </table>
       <br>
       <input type="button" value="Carregar Grafo" onclick="loadGraph()" />
-
+      <input id="buttonShowGraphDetails" style="display:none;" type="button" value="Mostrar detalhes do Grafo" onclick="showGraphDetails()" />
     </form>
 
     <output id="list"></output>
+    <br><br>
+    <output id="graphInfo"></output>
+    <br><br>
+
+    <div id="searchOptions" style="display:none;">
+        <form>
+          <table>
+            <tr>
+              <td>Tipo:</td>
+              <td>
+                <select id="searchType" name="searchType">
+                  <option value="0">BFS</option>
+                  <option value="1">DFS</option>
+                </select>
+              </td>
+              <td>Vértice de Partida:</td>
+              <td><input type="number" id="numVertice" min="1" /> </td>
+            </tr>
+          </table>
+        </form>
+    </div>
 
     <script>
       function handleFileSelect(evt)
@@ -51,6 +72,28 @@
       function loadGraph()
       {
         graph = new Graph($('#files').prop('files')[0],$('#type').val());
+        $('#searchOptions').css('display', 'block');
+        $('#buttonShowGraphDetails').css('display', 'block');
+
+      }
+
+      function showGraphDetails()
+      {
+        document.getElementById('graphInfo').innerHTML = ''+
+        '<ul>'
+          +'<li>n = '+ graph.nVertex +'</li>'
+          +'<li>m = '+ graph.nEdges +'</li>'
+          +'<li>Grau Médio = '+ graph.averageDegree +'</li>'
+        +'</ul>';
+      }
+
+      function searchGraph()
+      {
+        if(graph != "undefined")
+        {
+          graph.search($("#searchType").val(), $("#numVertice").val());
+
+        }
       }
     </script>
   </body>
