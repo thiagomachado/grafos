@@ -30,7 +30,7 @@
 
     <output id="list"></output>
     <br><br>
-    <output id="graphInfo"></output>
+    <output id="graphInfo" style="heigth:70px; overflow:auto:"></output>
     <br><br>
 
     <div id="searchOptions" style="display:none;">
@@ -46,6 +46,7 @@
               </td>
               <td>Vértice de Partida:</td>
               <td><input type="number" id="numVertice" min="1" /> </td>
+              <td><input type="button" id="buscar" value="buscar" onclick="searchGraph()"/></td>
             </tr>
           </table>
         </form>
@@ -83,8 +84,21 @@
         '<ul>'
           +'<li>n = '+ graph.nVertex +'</li>'
           +'<li>m = '+ graph.nEdges +'</li>'
-          +'<li>Grau Médio = '+ graph.averageDegree +'</li>'
+          +'<li>Grau Médio = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
         +'</ul>';
+        document.getElementById('graphInfo').innerHTML += '<p>Frequência relativa dos graus:<br>';
+        for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
+        {
+          if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
+          {
+            document.getElementById('graphInfo').innerHTML += ''
+            +i
+            +' : '
+            +(graph.degreeEmpiricalDitribution[i]/graph.nVertex)
+            +'<br/>';
+          }
+        }
+        document.getElementById('graphInfo').innerHTML += '</p>';
       }
 
       function searchGraph()
