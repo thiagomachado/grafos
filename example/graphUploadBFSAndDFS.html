@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+  <head lang = "pt-br">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="../lib/graph.js"></script>
+  </head>
+  <body>
+    <form>
+      <table>
+        <tr>
+          <td>File:</td>
+          <td><input type="file" accept='text/plain' id="files" name="files[]" /></td>
+        </tr>
+        <tr>
+          <td>Type:</td>
+          <td>
+            <select id="type" name="type">
+              <option value="0">Matrix</option>
+              <option value="1">List</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <br>
+      <input type="button" value="Load Graph" onclick="loadGraph()" />
+      <input id="buttonShowGraphDetails" style="display:none;" type="button" value="Show Graph's Details" onclick="showGraphDetails()" />
+    </form>
+
+    <output id="list"></output>
+    <br><br>
+    <output id="graphInfo" style="heigth:70px; overflow:auto:"></output>
+    <br><br>
+
+    <div id="searchOptions" style="display:none;">
+        <form>
+          <table>
+            <tr>
+              <td>Type:</td>
+              <td>
+                <select id="searchType" name="searchType">
+                  <option value="0">BFS</option>
+                  <option value="1">DFS</option>
+                </select>
+              </td>
+              <td>Origin:</td>
+              <td><input type="number" id="numVertice" min="1" /> </td>
+              <td><input type="button" id="buscar" value="buscar" onclick="searchGraph()"/></td>
+            </tr>
+          </table>
+        </form>
+    </div>
+
+    <script>
+      function handleFileSelect(evt)
+      {
+        var files = evt.target.files; // FileList object
+        console.log(files);
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        f = files[0];
+        output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, última modificação: ',
+                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+        document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+      }
+
+      document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+      var graph;
+
+      function loadGraph()
+      {
+        graph = new Graph($('#files').prop('files')[0],$('#type').val());
+        $('#searchOptions').css('display', 'block');
+        $('#buttonShowGraphDetails').css('display', 'block');
+
+      }
+
+      function showGraphDetails()
+      {
+        document.getElementById('graphInfo').innerHTML = ''+
+        '<ul>'
+          +'<li>n = '+ graph.nVertex +'</li>'
+          +'<li>m = '+ graph.nEdges +'</li>'
+          +'<li>Grau Médio = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
+        +'</ul>';
+        document.getElementById('graphInfo').innerHTML += '<p>Frequência relativa dos graus:<br>';
+        for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
+        {
+          if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
+          {
+            document.getElementById('graphInfo').innerHTML += ''
+            +i
+            +' : '
+            +(graph.degreeEmpiricalDitribution[i]/graph.nVertex)
+            +'<br/>';
+          }
+        }
+        document.getElementById('graphInfo').innerHTML += '</p>';
+      }
+
+      function searchGraph()
+      {
+        if(graph != "undefined")
+        {
+          graph.search($("#searchType").val(), $("#numVertice").val());
+
+        }
+      }
+    </script>
+  </body>
+</html>

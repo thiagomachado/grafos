@@ -3,54 +3,30 @@
 
   <head lang = "pt-br">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <script src="jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="js/chartist.min.css">
+    <script src="js/chartist.min.js"></script>
+    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="../lib/graph.js"></script>
   </head>
   <body>
     <form>
       <table>
         <tr>
-          <td>Arquivo:</td>
+          <td>File:</td>
           <td><input type="file" accept='text/plain' id="files" name="files[]" /></td>
-        </tr>
-        <tr>
-          <td>Tipo:</td>
-          <td>
-            <select id="type" name="type">
-              <option value="0">Matriz de Adjacência</option>
-              <option value="1">Lista de Adjacência</option>
-            </select>
-          </td>
         </tr>
       </table>
       <br>
-      <input type="button" value="Carregar Grafo" onclick="loadGraph()" />
-      <input id="buttonShowGraphDetails" style="display:none;" type="button" value="Mostrar detalhes do Grafo" onclick="showGraphDetails()" />
+      <input type="button" value="Load Graph" onclick="loadGraph()" />
+      <input id="buttonShowGraphDetails" style="display:none;" type="button" value="Show Gralh details" onclick="showGraphDetails()" />
     </form>
 
     <output id="list"></output>
     <br><br>
-    <output id="graphInfo" style="heigth:70px; overflow:auto:"></output>
-    <br><br>
+    <output id="graphInfo" style="heigth:70px; overflow:auto:">
 
-    <div id="searchOptions" style="display:none;">
-        <form>
-          <table>
-            <tr>
-              <td>Tipo:</td>
-              <td>
-                <select id="searchType" name="searchType">
-                  <option value="0">BFS</option>
-                  <option value="1">DFS</option>
-                </select>
-              </td>
-              <td>Vértice de Partida:</td>
-              <td><input type="number" id="numVertice" min="1" /> </td>
-              <td><input type="button" id="buscar" value="buscar" onclick="searchGraph()"/></td>
-            </tr>
-          </table>
-        </form>
-    </div>
+    </output>
+
 
     <script>
       function handleFileSelect(evt)
@@ -72,7 +48,7 @@
 
       function loadGraph()
       {
-        graph = new Graph($('#files').prop('files')[0],$('#type').val());
+        graph = new Graph($('#files').prop('files')[0],1);
         $('#searchOptions').css('display', 'block');
         $('#buttonShowGraphDetails').css('display', 'block');
 
@@ -84,31 +60,65 @@
         '<ul>'
           +'<li>n = '+ graph.nVertex +'</li>'
           +'<li>m = '+ graph.nEdges +'</li>'
-          +'<li>Grau Médio = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
+          +'<li>Avarage Degree = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
         +'</ul>';
-        document.getElementById('graphInfo').innerHTML += '<p>Frequência relativa dos graus:<br>';
+        document.getElementById('graphInfo').innerHTML += '<p>Degree relative frequency:<br>';
+
+        var data =
+        {
+          labels: [],
+          series: []
+        };
+
+        var options =
+        {
+          showPoint:  false,
+          width: 500,
+          height: 500,
+          lineSmooth: false,
+          axisX:
+          {
+            showGrid: false,
+            showLabel: false
+          }
+        };
+
+        var label = [];
+        var serie = [];
         for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
         {
           if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
           {
+            label.push(i);
+            serie.push(graph.degreeEmpiricalDitribution[i]);
             document.getElementById('graphInfo').innerHTML += ''
             +i
             +' : '
-            +(graph.degreeEmpiricalDitribution[i]/graph.nVertex)
+            +(graph.degreeEmpiricalDitribution[i])
             +'<br/>';
           }
         }
+        data.labels  =label;
+        data.series.push(serie);
         document.getElementById('graphInfo').innerHTML += '</p>';
-      }
+        document.getElementById('graphInfo').innerHTML += '<div class="ct-chart ct-perfect-fourth"></div>';
 
-      function searchGraph()
-      {
-        if(graph != "undefined")
+        // Create a new line chart object where as first parameter we pass in a selector
+        // that is resolving to our chart container element. The Second parameter
+        // is the actual data object.
+        new Chartist.Line('.ct-chart', data, options);
+
+        for(var i = graph.degreeEmpiricalDitribution.length; i > 0; i--)
         {
-          graph.search($("#searchType").val(), $("#numVertice").val());
+            if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
+            {
+              console.log(i+" "+graph.degreeEmpiricalDitribution[i]);
+              break;
+            }
 
         }
       }
+
     </script>
   </body>
 </html>
