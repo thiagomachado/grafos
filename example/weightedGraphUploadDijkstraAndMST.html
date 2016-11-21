@@ -13,15 +13,6 @@
           <td>File:</td>
           <td><input type="file" accept='text/plain' id="files" name="files[]" /></td>
         </tr>
-        <tr>
-          <td>Type:</td>
-          <td>
-            <select id="type" name="type">
-              <option value="0">Matrix</option>
-              <option value="1">List</option>
-            </select>
-          </td>
-        </tr>
       </table>
       <br>
       <input type="button" value="Load Graph" onclick="loadGraph()" />
@@ -72,7 +63,7 @@
 
       function loadGraph()
       {
-        graph = new Graph($('#files').prop('files')[0],$('#type').val());
+        graph = new WeightedGraph($('#files').prop('files')[0]);
         $('#searchOptions').css('display', 'block');
         $('#buttonShowGraphDetails').css('display', 'block');
 
@@ -84,7 +75,7 @@
         '<ul>'
           +'<li>n = '+ graph.nVertex +'</li>'
           +'<li>m = '+ graph.nEdges +'</li>'
-          +'<li>Avarage Degree = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
+          +'<li>Avarage Degree= '+ Number(graph.averageDegree).toFixed(0) +'</li>'
         +'</ul>';
         document.getElementById('graphInfo').innerHTML += '<p>Degree relative frequency:<br>';
         for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
