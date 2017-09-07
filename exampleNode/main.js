@@ -1,14 +1,23 @@
 /**
  * Syntax
- * node <path_to_this_file> <graph_file_path>
+ * node <this_file_dir>/main.js <graph_file_path>
 */
 
-var graphPath = process.argv[2];
+// load parameters
+var graphFilePath = process.argv[2];
 
-fs = require('fs')
-fs.readFile(graphPath, 'utf8', function (err,data) {
+// dependencies
+fs = require('fs');
+
+// validations
+if (!graphFilePath) {
+	throw new Error('Missing graphFilePath parameter');
+}
+
+fs.readFile(graphFilePath, 'utf8', function (err,data) {
   if (err) {
     return console.log(err);
   }
+
   console.log(data.length);
 });
