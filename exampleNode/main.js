@@ -4,14 +4,15 @@
 */
 
 // load parameters
-var graphFilePath = process.argv[2];
+var dataStructureType = process.argv[2];
+var graphFilePath = process.argv[3];
 
 // dependencies
 fs = require('fs');
 
 // validations
 if (!graphFilePath) {
-	throw new Error('Missing graphFilePath parameter');
+  throw new Error('Missing graphFilePath parameter');
 }
 
 fs.readFile(graphFilePath, 'utf8', function (err,data) {
