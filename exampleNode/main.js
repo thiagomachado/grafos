@@ -1,6 +1,6 @@
 /**
  * Syntax
- * node <this_file_dir>/main.js <graph_file_path>
+ * node <this_file_path> <data_structure_type> <graph_file_path>
 */
 
 // load parameters
