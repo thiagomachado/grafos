@@ -14,6 +14,9 @@ fs = require('fs');
 if (!graphFilePath) {
   throw new Error('Missing graphFilePath parameter');
 }
+if (!dataStructureType) {
+  throw new Error('Missing dataStructureType parameter');
+}
 
 fs.readFile(graphFilePath, 'utf8', function (err,data) {
   if (err) {
