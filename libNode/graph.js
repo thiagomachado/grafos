@@ -85,60 +85,53 @@ class Graph
   loadGraphFromFileAsMatrix(file)
   {
     console.time('loadMatrix');
-    var _this = this;
 
-    var reader = new FileReader();
-    reader.onload = function()
+    var nVertex = parseInt(file[0]);
+
+    this.nVertex = nVertex;
+    this.nEdges = file.length - 2;
+    this.degrees = new Array(nVertex + 1);
+    this.averageDegree = (2 * this.nEdges)/this.nVertex;
+    this.matrix = new Array(nVertex + 1);
+    this.mark = new Array(nVertex + 1);
+
+    for (var i = 1; i < this.matrix.length; i++)
     {
-      var text = reader.result.split("\n");
-      var nVertex = parseInt(text[0]);
+      this.matrix[i] = new Array(nVertex + 1);
+    }
 
-      _this.nVertex = nVertex;
-      _this.nEdges = text.length - 2;
-      _this.degrees = new Array(nVertex + 1);
-      _this.averageDegree = (2 * _this.nEdges)/_this.nVertex;
-      _this.matrix = new Array(nVertex + 1);
-      _this.mark = new Array(nVertex + 1);
+    for (var i = 1; i <= this.nEdges; i++)
+    {
+      var vertex = file[i].split(" ");
+      var vertex0 = parseInt(vertex[0]);
+      var vertex1 = parseInt(vertex[1]);
 
-      for (var i = 1; i < _this.matrix.length; i++)
-      {
-        _this.matrix[i] = new Array(nVertex + 1);
-      }
+       this.matrix[vertex0][vertex1] = 1;
+       this.matrix[vertex1][vertex0] = 1;
 
-      for (var i = 1; i <= _this.nEdges; i++)
-      {
-        var vertex = text[i].split(" ");
-        var vertex0 = parseInt(vertex[0]);
-        var vertex1 = parseInt(vertex[1]);
+       //for each edge, add 1 on deegre of each vertex of this edge
+       if(typeof this.degrees[vertex0] == "undefined")
+       {
+         this.degrees[vertex0] = 1;
+       }
+       else
+       {
+         this.degrees[vertex0]++;
+       }
+       if(typeof this.degrees[vertex1] == "undefined")
+       {
+         this.degrees[vertex1] = 1;
+       }
+       else
+       {
+         this.degrees[vertex1]++;
+       }
+    }
 
-         _this.matrix[vertex0][vertex1] = 1;
-         _this.matrix[vertex1][vertex0] = 1;
+    this.generateDegreeEmpiricalDistribution();
 
-         //for each edge, add 1 on deegre of each vertex of this edge
-         if(typeof   _this.degrees[vertex0] == "undefined")
-         {
-           _this.degrees[vertex0] = 1;
-         }
-         else
-         {
-           _this.degrees[vertex0]++;
-         }
-         if(typeof   _this.degrees[vertex1] == "undefined")
-         {
-           _this.degrees[vertex1] = 1;
-         }
-         else
-         {
-           _this.degrees[vertex1]++;
-         }
-      }
-
-      _this.generateDegreeEmpiricalDistribution();
-
-      console.log("finish");
-      console.timeEnd('loadMatrix');
-    };
-    reader.readAsText(file);
+    console.log("finish");
+    console.timeEnd('loadMatrix');
   }
 
   generateDegreeEmpiricalDistribution()
