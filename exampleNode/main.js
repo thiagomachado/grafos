@@ -20,5 +20,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
     return console.log(err);
   }
 
+  var graphModule = require('../libNode/graph.js');
+  var graph = new graphModule.Graph(data, dataStructureType);
   console.log(data.length);
 });
