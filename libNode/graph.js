@@ -22,64 +22,56 @@ class Graph
   loadGraphFromFileAsList(file)
   {
     console.time('loadList');
-    var _this = this;
 
-    var reader = new FileReader();
-    reader.onload = function()
+    var nVertex = parseInt(file[0]);
+
+
+    this.nVertex = nVertex;
+    this.nEdges = file.length - 2;
+    this.degrees = new Array(nVertex + 1);
+    this.averageDegree = (2 * this.nEdges)/this.nVertex;
+    this.list = new Array(nVertex + 1);
+    this.mark = new Array(nVertex + 1);
+
+    for (var i = 1; i <= this.nEdges; i++)
     {
-      var text = reader.result.split("\n");
-      var nVertex = parseInt(text[0]);
-
-
-      _this.nVertex = nVertex;
-      _this.nEdges = text.length - 2;
-      _this.degrees = new Array(nVertex + 1);
-      _this.averageDegree = (2 * _this.nEdges)/_this.nVertex;
-      _this.list = new Array(nVertex + 1);
-      _this.mark = new Array(nVertex + 1);
-
-      for (var i = 1; i <= _this.nEdges; i++)
+      var vertex = file[i].split(" ");
+      var vertex0 = parseInt(vertex[0]);
+      var vertex1 = parseInt(vertex[1]);
+      if(typeof this.list[vertex0] == "undefined")
       {
-        var vertex = text[i].split(" ");
-        var vertex0 = parseInt(vertex[0]);
-        var vertex1 = parseInt(vertex[1]);
-        if(typeof _this.list[vertex0] == "undefined")
-        {
-          _this.list[vertex0] = new Array();
-        }
-        if(typeof _this.list[vertex1] == "undefined")
-        {
-          _this.list[vertex1] = new Array();
-        }
-        _this.list[vertex0].push(vertex1);
-        _this.list[vertex1].push(vertex0);
-
-        //for each edge, add 1 on deegre of each vertex of this edge
-        if(typeof   _this.degrees[vertex0] == "undefined")
-        {
-          _this.degrees[vertex0] = 1;
-        }
-        else
-        {
-          _this.degrees[vertex0]++;
-        }
-        if(typeof   _this.degrees[vertex1] == "undefined")
-        {
-          _this.degrees[vertex1] = 1;
-        }
-        else
-        {
-          _this.degrees[vertex1]++;
-        }
-
+        this.list[vertex0] = new Array();
       }
+      if(typeof this.list[vertex1] == "undefined")
+      {
+        this.list[vertex1] = new Array();
+      }
+      this.list[vertex0].push(vertex1);
+      this.list[vertex1].push(vertex0);
 
-      _this.generateDegreeEmpiricalDistribution();
+      //for each edge, add 1 on deegre of each vertex of this edge
+      if(typeof   this.degrees[vertex0] == "undefined")
+      {
+        this.degrees[vertex0] = 1;
+      }
+      else
+      {
+        this.degrees[vertex0]++;
+      }
+      if(typeof   this.degrees[vertex1] == "undefined")
+      {
+        this.degrees[vertex1] = 1;
+      }
+      else
+      {
+        this.degrees[vertex1]++;
+      }
+    }
 
-      console.log("finish");
-      console.timeEnd('loadList');
-    };
-    reader.readAsText(file);
+    this.generateDegreeEmpiricalDistribution();
+
+    console.log("finish");
+    console.timeEnd('loadList');
   }
 
   loadGraphFromFileAsMatrix(file)
