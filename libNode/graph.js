@@ -4,9 +4,6 @@ class Graph
   {
     this.type = type;
     this.load = false;
-    this.nConnectedComponents = 0;
-    this.maxComponents = 0;
-    this.minComponents = 10000000000000;
 
     if(this.type == 0)
     {
@@ -236,7 +233,11 @@ class Graph
     var stack = [];
     var graph = [];
 
+    // counts also the origin as a discovered vertex
+    this.nDiscoveredVertices++;
+
     stack.push(origin);
+    this.discovered[origin] = true;
 
     if(this.type == 0)
     {
@@ -249,7 +250,6 @@ class Graph
 
     while (stack.length > 0)
     {
-
       var selectedVertex = stack.pop();
       if( undefined == graph[selectedVertex])
       {
@@ -270,6 +270,7 @@ class Graph
               if(this.discovered[i] != true)
               {
                 this.discovered[i] = true;
+                this.nDiscoveredVertices++;
                 this.fathers[i] = selectedVertex;
               }
             }
@@ -283,6 +284,7 @@ class Graph
             if(this.discovered[neighbors[i]] != true)
             {
               this.discovered[neighbors[i]] = true;
+              this.nDiscoveredVertices++;
               this.fathers[neighbors[i]] = selectedVertex;
             }
           }
@@ -293,42 +295,27 @@ class Graph
     console.timeEnd('DFS');
   }
 
-  connectedComponets()
+  genConnectedComponents()
   {
-    console.time("connectedComponets");
-    var aux = 0;
+    console.time("connectedComponents");
+    this.connectedComponents = [];
     for (var i = 1; i <= this.nVertex; i++)
     {
-      if(typeof this.mark[i] == "undefined")
+      if(typeof this.discovered[i] == "undefined")
       {
 
-        this.nConnectedComponents ++;
+        this.mark = [];
+        this.nDiscoveredVertices = 0;
+
         this.dfs(i);
-        var nComponents = 0;
-
-        for (var j = 1; j <= this.mark.length; j++)
-        {
-          if(typeof this.mark[j] != "undefined")
-          {
-            nComponents ++;
-          }
-        }
-        aux = nComponents - aux;
-        if(aux >= this.maxComponents)
-        {
-          this.maxComponents = aux;
-        }
-        if(aux <= this.minComponents)
-        {
-          this.minComponents = aux;
-        }
-        console.timeEnd("connectedComponets");
+        this.connectedComponents[this.connectedComponents.length] = {
+          'size':      this.nDiscoveredVertices,
+          'vertices':  this.mark
+        };
       }
-
     }
-    return 0;
+    console.timeEnd("connectedComponents");
   }
-
 }
 
 exports.Graph = Graph;
