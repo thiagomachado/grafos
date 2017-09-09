@@ -17,6 +17,8 @@ class Graph
     {
       this.loadGraphFromFileAsList(file);
     }
+
+    this.prepareForSearch();
   }
 
   loadGraphFromFileAsList(file)
@@ -167,10 +169,6 @@ class Graph
     var neighbors = [];
     var graph = [];
 
-    this.mark    = new Array(this.nVertex + 1);
-    this.fathers = new Array(this.nVertex + 1);
-    this.layer   = new Array(this.nVertex + 1);
-
     this.layer[origin] = 0;
     this.mark[origin] = true;
     queue.push(origin);
@@ -223,16 +221,20 @@ class Graph
     console.timeEnd('BFS');
   }
 
+  prepareForSearch()
+  {
+    this.mark       = new Array(this.nVertex + 1);
+    this.discovered = new Array(this.nVertex + 1);
+    this.layer = new Array(this.nVertex + 1);
+    this.fathers    = new Array(this.nVertex + 1);
+  }
+
   dfs(origin)
   {
     console.time('DFS');
     origin = parseInt(origin);
     var stack = [];
-    var discovered = new Array(this.nVertex + 1);
     var graph = [];
-
-    this.mark    = new Array(this.nVertex + 1);
-    this.fathers = new Array(this.nVertex + 1);
 
     stack.push(origin);
 
@@ -265,9 +267,9 @@ class Graph
             if (this.mark[i]!=true)
             {
               stack.push(i);
-              if(discovered[i] != true)
+              if(this.discovered[i] != true)
               {
-                discovered[i] = true;
+                this.discovered[i] = true;
                 this.fathers[i] = selectedVertex;
               }
             }
@@ -278,9 +280,9 @@ class Graph
           if (this.mark[neighbors[i]]!=true)
           {
             stack.push(neighbors[i]);
-            if(discovered[neighbors[i]] != true)
+            if(this.discovered[neighbors[i]] != true)
             {
-              discovered[neighbors[i]] = true;
+              this.discovered[neighbors[i]] = true;
               this.fathers[neighbors[i]] = selectedVertex;
             }
           }
