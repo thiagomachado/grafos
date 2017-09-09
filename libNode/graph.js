@@ -30,6 +30,7 @@ class Graph
     this.degrees = new Array(nVertex + 1);
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.list = new Array(nVertex + 1);
+    this.mark = new Array(nVertex + 1);
 
     for (var i = 1; i <= this.nEdges; i++)
     {
@@ -81,6 +82,7 @@ class Graph
     this.degrees = new Array(nVertex + 1);
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.matrix = new Array(nVertex + 1);
+    this.mark = new Array(nVertex + 1);
 
     for (var i = 1; i < this.matrix.length; i++)
     {
@@ -167,10 +169,8 @@ class Graph
     var neighbors = [];
     var graph = [];
 
-    this.mark    = new Array(this.nVertex + 1);
     this.fathers = new Array(this.nVertex + 1);
-    this.layer   = new Array(this.nVertex + 1);
-
+    this.layer = new Array(this.nVertex + 1);
     this.layer[origin] = 0;
     this.mark[origin] = true;
     queue.push(origin);
@@ -231,9 +231,7 @@ class Graph
     var discovered = new Array(this.nVertex + 1);
     var graph = [];
 
-    this.mark    = new Array(this.nVertex + 1);
     this.fathers = new Array(this.nVertex + 1);
-
     stack.push(origin);
 
     if(this.type == 0)
@@ -327,86 +325,6 @@ class Graph
     return 0;
   }
 
-}
-
-
-
-class WeightedGraph
-{
-  constructor(file)
-  {
-    this.load = false;
-    this.nConnectedComponents = 0;
-    this.maxComponents = 0;
-    this.minComponents = 10000000000000;
-
-    this.loadGraphFromFileAsList(file);
-  }
-
-  loadGraphFromFileAsList(file)
-  {
-    console.time('loadList');
-    var _this = this;
-
-    var reader = new FileReader();
-    reader.onload = function()
-    {
-      var text = reader.result.split("\n");
-      var nVertex = parseInt(text[0]);
-
-
-      _this.nVertex = nVertex;
-      _this.nEdges = text.length - 2;
-      _this.degrees = new Array(nVertex + 1);
-      _this.averageDegree = (2 * _this.nEdges)/_this.nVertex;
-      _this.list = new Array(nVertex + 1);
-      _this.mark = new Array(nVertex + 1);
-
-      for (var i = 1; i <= _this.nEdges; i++)
-      {
-        var line = text[i].split(" ");
-        var vertex0 = parseInt(line[0]);
-        var vertex1 = parseInt(line[1]);
-        var weight = parseInt(line[2]);
-
-        if(typeof _this.list[vertex0] == "undefined")
-        {
-          _this.list[vertex0] = new Array();
-        }
-        if(typeof _this.list[vertex1] == "undefined")
-        {
-          _this.list[vertex1] = new Array();
-        }
-        _this.list[vertex0].push(vertex1);
-        _this.list[vertex1].push(vertex0);
-
-        //for each edge, add 1 on deegre of each vertex of this edge
-        if(typeof   _this.degrees[vertex0] == "undefined")
-        {
-          _this.degrees[vertex0] = 1;
-        }
-        else
-        {
-          _this.degrees[vertex0]++;
-        }
-        if(typeof   _this.degrees[vertex1] == "undefined")
-        {
-          _this.degrees[vertex1] = 1;
-        }
-        else
-        {
-          _this.degrees[vertex1]++;
-        }
-
-      }
-
-      //_this.generateDegreeEmpiricalDistribution();
-
-      console.log("finish");
-      console.timeEnd('loadList');
-    };
-    reader.readAsText(file);
-  }
 }
 
 exports.Graph = Graph;
