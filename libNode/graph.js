@@ -67,8 +67,6 @@ class Graph
       }
     }
 
-    this.generateDegreeEmpiricalDistribution();
-
     console.log("finish");
     console.timeEnd('loadList');
   }
@@ -119,16 +117,18 @@ class Graph
        }
     }
 
-    this.generateDegreeEmpiricalDistribution();
-
     console.log("finish");
     console.timeEnd('loadMatrix');
   }
 
-  generateDegreeEmpiricalDistribution()
+  /**
+   * Computes the degree frequency
+   */
+  genDegreeFrequency()
   {
-    //computate the degree's empirical distribution
-    this.degreeEmpiricalDitribution = new Array( this.nVertex - 1);
+    // degree frequency should be a flexible size hashtable,
+    // since the degree frequency is sparse
+    this.degreeFrequency = new Array();
     for (var i = 1; i < this.degrees.length; i++)
     {
       var degreeOfIvertex = this.degrees[i];
@@ -137,18 +137,16 @@ class Graph
         degreeOfIvertex = 0;
       }
 
-      if(typeof this.degreeEmpiricalDitribution[degreeOfIvertex] == "undefined")
+      if(typeof this.degreeFrequency[degreeOfIvertex] == "undefined")
       {
-        this.degreeEmpiricalDitribution[degreeOfIvertex] = 1;
+        this.degreeFrequency[degreeOfIvertex] = 1;
       }
       else
       {
-        this.degreeEmpiricalDitribution[degreeOfIvertex]++;
+        this.degreeFrequency[degreeOfIvertex]++;
       }
     }
-
   }
-
 
   search(type, origin)
   {
