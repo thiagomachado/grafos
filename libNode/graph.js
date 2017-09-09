@@ -4,9 +4,6 @@ class Graph
   {
     this.type = type;
     this.load = false;
-    this.nConnectedComponents = 0;
-    this.maxComponents = 0;
-    this.minComponents = 10000000000000;
 
     if(this.type == 0)
     {
@@ -17,6 +14,8 @@ class Graph
     {
       this.loadGraphFromFileAsList(file);
     }
+
+    this.prepareForSearch();
   }
 
   loadGraphFromFileAsList(file)
@@ -167,10 +166,6 @@ class Graph
     var neighbors = [];
     var graph = [];
 
-    this.mark    = new Array(this.nVertex + 1);
-    this.fathers = new Array(this.nVertex + 1);
-    this.layer   = new Array(this.nVertex + 1);
-
     this.layer[origin] = 0;
     this.mark[origin] = true;
     queue.push(origin);
@@ -223,18 +218,26 @@ class Graph
     console.timeEnd('BFS');
   }
 
+  prepareForSearch()
+  {
+    this.mark       = new Array(this.nVertex + 1);
+    this.discovered = new Array(this.nVertex + 1);
+    this.layer = new Array(this.nVertex + 1);
+    this.fathers    = new Array(this.nVertex + 1);
+  }
+
   dfs(origin)
   {
     console.time('DFS');
     origin = parseInt(origin);
     var stack = [];
-    var discovered = new Array(this.nVertex + 1);
     var graph = [];
 
-    this.mark    = new Array(this.nVertex + 1);
-    this.fathers = new Array(this.nVertex + 1);
+    // counts also the origin as a discovered vertex
+    this.nDiscoveredVertices++;
 
     stack.push(origin);
+    this.discovered[origin] = true;
 
     if(this.type == 0)
     {
@@ -247,7 +250,6 @@ class Graph
 
     while (stack.length > 0)
     {
-
       var selectedVertex = stack.pop();
       if( undefined == graph[selectedVertex])
       {
@@ -265,9 +267,10 @@ class Graph
             if (this.mark[i]!=true)
             {
               stack.push(i);
-              if(discovered[i] != true)
+              if(this.discovered[i] != true)
               {
-                discovered[i] = true;
+                this.discovered[i] = true;
+                this.nDiscoveredVertices++;
                 this.fathers[i] = selectedVertex;
               }
             }
@@ -278,9 +281,10 @@ class Graph
           if (this.mark[neighbors[i]]!=true)
           {
             stack.push(neighbors[i]);
-            if(discovered[neighbors[i]] != true)
+            if(this.discovered[neighbors[i]] != true)
             {
-              discovered[neighbors[i]] = true;
+              this.discovered[neighbors[i]] = true;
+              this.nDiscoveredVertices++;
               this.fathers[neighbors[i]] = selectedVertex;
             }
           }
@@ -291,42 +295,27 @@ class Graph
     console.timeEnd('DFS');
   }
 
-  connectedComponets()
+  genConnectedComponents()
   {
-    console.time("connectedComponets");
-    var aux = 0;
+    console.time("connectedComponents");
+    this.connectedComponents = [];
     for (var i = 1; i <= this.nVertex; i++)
     {
-      if(typeof this.mark[i] == "undefined")
+      if(typeof this.discovered[i] == "undefined")
       {
 
-        this.nConnectedComponents ++;
+        this.mark = [];
+        this.nDiscoveredVertices = 0;
+
         this.dfs(i);
-        var nComponents = 0;
-
-        for (var j = 1; j <= this.mark.length; j++)
-        {
-          if(typeof this.mark[j] != "undefined")
-          {
-            nComponents ++;
-          }
-        }
-        aux = nComponents - aux;
-        if(aux >= this.maxComponents)
-        {
-          this.maxComponents = aux;
-        }
-        if(aux <= this.minComponents)
-        {
-          this.minComponents = aux;
-        }
-        console.timeEnd("connectedComponets");
+        this.connectedComponents[this.connectedComponents.length] = {
+          'size':      this.nDiscoveredVertices,
+          'vertices':  this.mark
+        };
       }
-
     }
-    return 0;
+    console.timeEnd("connectedComponents");
   }
-
 }
 
 exports.Graph = Graph;
