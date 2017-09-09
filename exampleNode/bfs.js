@@ -11,6 +11,8 @@ var origin            = process.argv[4];
 // dependencies
 fs = require('fs');
 
+fileDestination = 'bfs.txt';
+
 // validations
 if (!graphFilePath) {
   throw new Error('Missing graphFilePath parameter');
@@ -33,4 +35,16 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graph = new graphModule.Graph(data, dataStructureType);
 
   graph.bfs(origin);
+
+  // writing the file
+  text = '';
+  for (var i = 0; i < graph.fathers.length; i++) {
+    text += i + ' ' + graph.fathers[i] + '\n';
+  }
+  fs.writeFile(fileDestination, text, function(err) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("The file was saved!");
+  });
 });
