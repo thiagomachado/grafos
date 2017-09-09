@@ -25,7 +25,6 @@ class Graph
 
     var nVertex = parseInt(file[0]);
 
-
     this.nVertex = nVertex;
     this.nEdges = file.length - 2;
     this.degrees = new Array(nVertex + 1);
@@ -173,6 +172,8 @@ class Graph
     var graph = [];
 
     this.fathers = new Array(this.nVertex + 1);
+    this.layer = new Array(this.nVertex + 1);
+    this.layer[origin] = 0;
     this.mark[origin] = true;
     queue.push(origin);
 
@@ -205,6 +206,7 @@ class Graph
               this.mark[i] = true;
               queue.push(i);
               this.fathers[i] = selectedVertex;
+              this.layer[i] = this.layer[selectedVertex] + 1;
             }
           }
           else
@@ -214,6 +216,7 @@ class Graph
               this.mark[neighbors[i]] = true;
               queue.push(neighbors[i]);
               this.fathers[neighbors[i]] = selectedVertex;
+              this.layer[neighbors[i]] = this.layer[selectedVertex] + 1;
             }
           }
         }

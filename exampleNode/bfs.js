@@ -39,7 +39,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   // writing the file
   text = '';
   for (var i = 0; i < graph.fathers.length; i++) {
-    text += i + ' ' + graph.fathers[i] + '\n';
+    text += i + ' ' + graph.fathers[i] + ' ' + graph.layer[i] + '\n';
   }
   fs.writeFile(fileDestination, text, function(err) {
     if (err) {
