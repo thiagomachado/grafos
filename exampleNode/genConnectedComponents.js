@@ -30,7 +30,9 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graphModule = require('../libNode/graph.js');
   var graph = new graphModule.Graph(data, dataStructureType);
 
+  console.time("connectedComponents");
   graph.genConnectedComponents();
+  console.timeEnd("connectedComponents");
 
   graph.connectedComponents.sort(function(a, b){
     return a.size < b.size;

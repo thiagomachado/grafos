@@ -34,7 +34,9 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graphModule = require('../libNode/graph.js');
   var graph = new graphModule.Graph(data, dataStructureType);
 
+  console.time('BFS');
   graph.bfs(origin);
+  console.timeEnd('BFS');
 
   // writing the file
   text = '';

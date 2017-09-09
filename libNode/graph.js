@@ -64,8 +64,6 @@ class Graph
         this.degrees[vertex1]++;
       }
     }
-
-    console.log("finish");
     console.timeEnd('loadList');
   }
 
@@ -113,8 +111,6 @@ class Graph
          this.degrees[vertex1]++;
        }
     }
-
-    console.log("finish");
     console.timeEnd('loadMatrix');
   }
 
@@ -160,7 +156,6 @@ class Graph
 
   bfs(origin)
   {
-    console.time('BFS');
     origin = parseInt(origin);
     var queue = [];
     var neighbors = [];
@@ -215,7 +210,6 @@ class Graph
         }
       }
     }
-    console.timeEnd('BFS');
   }
 
   prepareForSearch()
@@ -228,7 +222,6 @@ class Graph
 
   dfs(origin)
   {
-    console.time('DFS');
     origin = parseInt(origin);
     var stack = [];
     var graph = [];
@@ -291,13 +284,10 @@ class Graph
         }
       }
     }
-
-    console.timeEnd('DFS');
   }
 
   genConnectedComponents()
   {
-    console.time("connectedComponents");
     this.connectedComponents = [];
     for (var i = 1; i <= this.nVertex; i++)
     {
@@ -314,7 +304,6 @@ class Graph
         };
       }
     }
-    console.timeEnd("connectedComponents");
   }
 }
 
