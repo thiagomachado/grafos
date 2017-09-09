@@ -30,7 +30,6 @@ class Graph
     this.degrees = new Array(nVertex + 1);
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.list = new Array(nVertex + 1);
-    this.mark = new Array(nVertex + 1);
 
     for (var i = 1; i <= this.nEdges; i++)
     {
@@ -82,7 +81,6 @@ class Graph
     this.degrees = new Array(nVertex + 1);
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.matrix = new Array(nVertex + 1);
-    this.mark = new Array(nVertex + 1);
 
     for (var i = 1; i < this.matrix.length; i++)
     {
@@ -169,8 +167,10 @@ class Graph
     var neighbors = [];
     var graph = [];
 
+    this.mark    = new Array(this.nVertex + 1);
     this.fathers = new Array(this.nVertex + 1);
-    this.layer = new Array(this.nVertex + 1);
+    this.layer   = new Array(this.nVertex + 1);
+
     this.layer[origin] = 0;
     this.mark[origin] = true;
     queue.push(origin);
@@ -231,7 +231,9 @@ class Graph
     var discovered = new Array(this.nVertex + 1);
     var graph = [];
 
+    this.mark    = new Array(this.nVertex + 1);
     this.fathers = new Array(this.nVertex + 1);
+
     stack.push(origin);
 
     if(this.type == 0)
