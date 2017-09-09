@@ -34,6 +34,13 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   // writing the file
   text = '';
+
+  text += 'Número de vértices: ' + graph.nVertex + '\n';
+  text += 'Número de arestas: ' + graph.nEdges + '\n';
+  text += 'Grau médio: ' + graph.averageDegree + '\n';
+  text += '\n';
+
+  text += 'Distribuição empírica dos graus dos vértices:\n';
   graph.degreeFrequency.forEach(function(degreeFrequency, i) {
     text += i + ': ' + degreeFrequency / graph.nVertex + '\n';
   });
