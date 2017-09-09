@@ -227,7 +227,7 @@ class Graph
 
   dfs(origin)
   {
-    //console.time('DFS');
+    console.time('DFS');
     origin = parseInt(origin);
     var stack = [];
     var discovered = new Array(this.nVertex + 1);
@@ -288,7 +288,7 @@ class Graph
       }
     }
 
-    //console.timeEnd('DFS');
+    console.timeEnd('DFS');
   }
 
   connectedComponets()
