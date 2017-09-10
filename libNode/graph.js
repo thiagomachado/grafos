@@ -157,13 +157,16 @@ class Graph
   bfs(origin)
   {
     origin = parseInt(origin);
-    var queue = [];
     var neighbors = [];
     var graph = [];
 
+    this.queue = [];
+
     this.layer[origin] = 0;
+
     this.mark[origin] = true;
-    queue.push(origin);
+
+    this.queue.push(origin);
 
     if(this.type == 0)
     {
@@ -177,9 +180,9 @@ class Graph
     // workaround to support getting the first element of queue
     // array.shift moves the entire array around in order to reindex it
     var curQueueStart = 0;
-    while (queue.length > curQueueStart)
+    while (this.queue.length > curQueueStart)
     {
-      var selectedVertex = queue[curQueueStart];
+      var selectedVertex = this.queue[curQueueStart];
       // removes element from queue
       curQueueStart++;
 
@@ -198,7 +201,7 @@ class Graph
             if (this.mark[i] != true)
             {
               this.mark[i] = true;
-              queue.push(i);
+              this.queue.push(i);
               this.fathers[i] = selectedVertex;
               this.layer[i] = this.layer[selectedVertex] + 1;
             }
@@ -208,7 +211,7 @@ class Graph
             if (this.mark[neighbors[i]] != true)
             {
               this.mark[neighbors[i]] = true;
-              queue.push(neighbors[i]);
+              this.queue.push(neighbors[i]);
               this.fathers[neighbors[i]] = selectedVertex;
               this.layer[neighbors[i]] = this.layer[selectedVertex] + 1;
             }
@@ -231,9 +234,6 @@ class Graph
     origin = parseInt(origin);
     var stack = [];
     var graph = [];
-
-    // counts also the origin as a discovered vertex
-    this.nDiscoveredVertices++;
 
     stack.push(origin);
     this.discovered[origin] = true;
@@ -269,7 +269,6 @@ class Graph
               if(this.discovered[i] != true)
               {
                 this.discovered[i] = true;
-                this.nDiscoveredVertices++;
                 this.fathers[i] = selectedVertex;
               }
             }
@@ -283,7 +282,6 @@ class Graph
             if(this.discovered[neighbors[i]] != true)
             {
               this.discovered[neighbors[i]] = true;
-              this.nDiscoveredVertices++;
               this.fathers[neighbors[i]] = selectedVertex;
             }
           }
@@ -297,17 +295,11 @@ class Graph
     this.connectedComponents = [];
     for (var i = 1; i <= this.nVertex; i++)
     {
-      if(typeof this.discovered[i] == "undefined")
+      if(typeof this.mark[i] == "undefined")
       {
-
-        this.mark = [];
-        this.nDiscoveredVertices = 0;
-
-        this.dfs(i);
-        this.connectedComponents[this.connectedComponents.length] = {
-          'size':      this.nDiscoveredVertices,
-          'vertices':  this.mark
-        };
+        this.queue = [];
+        this.bfs(i);
+        this.connectedComponents[this.connectedComponents.length] = this.queue;
       }
     }
   }

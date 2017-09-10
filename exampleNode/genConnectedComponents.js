@@ -35,20 +35,19 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   console.timeEnd("connectedComponents");
 
   graph.connectedComponents.sort(function(a, b){
-    return a.size < b.size;
+    return b.length - a.length;
   });
 
   // writing the file
   text = '';
-
-  graph.connectedComponents.forEach(function(connectedComponent) {
-    text += connectedComponent.size + ': ';
-    connectedComponent.vertices.forEach(function(vertice, i)
-    {
-      text += i + ' ';
-    });
+  for (var i = 0, iLimit = graph.connectedComponents.length; i < iLimit; i++) {
+    connectedComponent = graph.connectedComponents[i];
+    text += connectedComponent.length + ': ';
+    for (var j = 0, jLimit = connectedComponent.length; j < jLimit; j++) {
+        text += connectedComponent[j] + ' ';
+    }
     text += '\n';
-  });
+  }
 
   fs.writeFile(fileDestination, text, function(err) {
     if (err) {
