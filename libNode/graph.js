@@ -174,9 +174,15 @@ class Graph
       graph = this.list;
     }
 
-    while (queue.length > 0)
+    // workaround to support getting the first element of queue
+    // array.shift moves the entire array around in order to reindex it
+    var curQueueStart = 0;
+    while (queue.length > curQueueStart)
     {
-      var selectedVertex = queue.shift();
+      var selectedVertex = queue[curQueueStart];
+      // removes element from queue
+      curQueueStart++;
+
       if( undefined == graph[selectedVertex])
       {
         graph[selectedVertex] = [];
