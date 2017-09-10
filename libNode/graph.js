@@ -7,18 +7,18 @@ class Graph
 
     if(this.type == 0)
     {
-      this.loadGraphFromFileAsMatrix(file);
+      this.loadGraphAsMatrix(file);
     }
 
     if (this.type == 1)
     {
-      this.loadGraphFromFileAsList(file);
+      this.loadGraphAsList(file);
     }
 
     this.prepareForSearch();
   }
 
-  loadGraphFromFileAsList(file)
+  loadGraphAsList(file)
   {
     console.time('loadList');
 
@@ -67,7 +67,7 @@ class Graph
     console.timeEnd('loadList');
   }
 
-  loadGraphFromFileAsMatrix(file)
+  loadGraphAsMatrix(file)
   {
     console.time('loadMatrix');
 
