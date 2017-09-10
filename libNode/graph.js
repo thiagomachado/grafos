@@ -81,7 +81,7 @@ class Graph
 
     for (var i = 1; i < this.matrix.length; i++)
     {
-      this.matrix[i] = new Array(nVertex + 1);
+      this.matrix[i] = new Int8Array(nVertex + 1);
     }
 
     for (var i = 1; i <= this.nEdges; i++)
