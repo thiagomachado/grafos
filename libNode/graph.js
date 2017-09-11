@@ -202,7 +202,7 @@ class Graph
             {
               this.mark[i] = true;
               this.queue.push(i);
-              this.fathers[i] = selectedVertex;
+              this.parents[i] = selectedVertex;
               this.layer[i] = this.layer[selectedVertex] + 1;
             }
           }
@@ -212,7 +212,7 @@ class Graph
             {
               this.mark[neighbors[i]] = true;
               this.queue.push(neighbors[i]);
-              this.fathers[neighbors[i]] = selectedVertex;
+              this.parents[neighbors[i]] = selectedVertex;
               this.layer[neighbors[i]] = this.layer[selectedVertex] + 1;
             }
           }
@@ -226,7 +226,7 @@ class Graph
     this.mark       = new Array(this.nVertex + 1);
     this.discovered = new Array(this.nVertex + 1);
     this.layer = new Array(this.nVertex + 1);
-    this.fathers    = new Array(this.nVertex + 1);
+    this.parents    = new Array(this.nVertex + 1);
   }
 
   dfs(origin)
@@ -269,7 +269,7 @@ class Graph
               if(this.discovered[i] != true)
               {
                 this.discovered[i] = true;
-                this.fathers[i] = selectedVertex;
+                this.parents[i] = selectedVertex;
               }
             }
           }
@@ -282,7 +282,7 @@ class Graph
             if(this.discovered[neighbors[i]] != true)
             {
               this.discovered[neighbors[i]] = true;
-              this.fathers[neighbors[i]] = selectedVertex;
+              this.parents[neighbors[i]] = selectedVertex;
             }
           }
         }
