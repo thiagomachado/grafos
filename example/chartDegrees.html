@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="js/chartist.min.css">
     <script src="js/chartist.min.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="../lib/graph.js"></script>
+    <script src="../libNode/graph.js"></script>
   </head>
   <body>
     <form>
@@ -37,8 +37,7 @@
         var output = [];
         f = files[0];
         output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                    f.size, ' bytes, última modificação: ',
-                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+                    f.size, ' bytes   </li>');
         document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
       }
 
@@ -48,10 +47,15 @@
 
       function loadGraph()
       {
-        graph = new Graph($('#files').prop('files')[0],1);
-        $('#searchOptions').css('display', 'block');
-        $('#buttonShowGraphDetails').css('display', 'block');
-
+        var file = $('#files').prop('files')[0]
+        var reader = new FileReader();
+        reader.onload = function()
+        {
+          var text = reader.result.split("\n");
+          graph = new Graph(text,1);
+          $('#buttonShowGraphDetails').css('display', 'block');
+        }
+        reader.readAsText(file);
       }
 
       function showGraphDetails()
@@ -85,19 +89,14 @@
 
         var label = [];
         var serie = [];
-        for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
+        graph.genDegreeFrequency();
+        graph.degreeFrequency.forEach(function(degreeFrequency, i)
         {
-          if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
-          {
-            label.push(i);
-            serie.push(graph.degreeEmpiricalDitribution[i]);
-            document.getElementById('graphInfo').innerHTML += ''
-            +i
-            +' : '
-            +(graph.degreeEmpiricalDitribution[i])
-            +'<br/>';
-          }
-        }
+          label.push(i);
+          serie.push(degreeFrequency);
+          document.getElementById('graphInfo').innerHTML += i + ': ' + degreeFrequency+ '<br/>';
+        });
+
         data.labels  =label;
         data.series.push(serie);
         document.getElementById('graphInfo').innerHTML += '</p>';
@@ -107,16 +106,6 @@
         // that is resolving to our chart container element. The Second parameter
         // is the actual data object.
         new Chartist.Line('.ct-chart', data, options);
-
-        for(var i = graph.degreeEmpiricalDitribution.length; i > 0; i--)
-        {
-            if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
-            {
-              console.log(i+" "+graph.degreeEmpiricalDitribution[i]);
-              break;
-            }
-
-        }
       }
 
     </script>

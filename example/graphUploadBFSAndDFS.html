@@ -4,7 +4,7 @@
   <head lang = "pt-br">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="../lib/graph.js"></script>
+    <script src="../libNode/graph.js"></script>
   </head>
   <body>
     <form>
@@ -61,8 +61,7 @@
         var output = [];
         f = files[0];
         output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                    f.size, ' bytes, última modificação: ',
-                    f.lastModifiedDate.toLocaleDateString(), '</li>');
+                    f.size, ' bytes </li>');
         document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
       }
 
@@ -72,10 +71,16 @@
 
       function loadGraph()
       {
-        graph = new Graph($('#files').prop('files')[0],$('#type').val());
-        $('#searchOptions').css('display', 'block');
-        $('#buttonShowGraphDetails').css('display', 'block');
-
+        var file = $('#files').prop('files')[0]
+        var reader = new FileReader();
+        reader.onload = function()
+        {
+          var text = reader.result.split("\n");
+          graph = new Graph(text,$('#type').val());
+          $('#searchOptions').css('display', 'block');
+          $('#buttonShowGraphDetails').css('display', 'block');
+        }
+        reader.readAsText(file);
       }
 
       function showGraphDetails()
@@ -87,17 +92,11 @@
           +'<li>Avarage Degree = '+ Number(graph.averageDegree).toFixed(0) +'</li>'
         +'</ul>';
         document.getElementById('graphInfo').innerHTML += '<p>Degree relative frequency:<br>';
-        for (var i = 0; i < graph.degreeEmpiricalDitribution.length; i++)
+        graph.genDegreeFrequency();
+        graph.degreeFrequency.forEach(function(degreeFrequency, i)
         {
-          if(typeof graph.degreeEmpiricalDitribution[i] != 'undefined')
-          {
-            document.getElementById('graphInfo').innerHTML += ''
-            +i
-            +' : '
-            +(graph.degreeEmpiricalDitribution[i]/graph.nVertex)
-            +'<br/>';
-          }
-        }
+          document.getElementById('graphInfo').innerHTML += i + ': ' + degreeFrequency / graph.nVertex + '<br/>';
+        });        
         document.getElementById('graphInfo').innerHTML += '</p>';
       }
 
