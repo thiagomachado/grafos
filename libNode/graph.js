@@ -238,6 +238,8 @@ class Graph
     stack.push(origin);
     this.discovered[origin] = true;
 
+    this.layer[origin] = 0;
+
     if(this.type == 0)
     {
       graph = this.matrix;
@@ -270,6 +272,7 @@ class Graph
               {
                 this.discovered[i] = true;
                 this.parents[i] = selectedVertex;
+                this.layer[i] = this.layer[selectedVertex] + 1;
               }
             }
           }
@@ -283,6 +286,7 @@ class Graph
             {
               this.discovered[neighbors[i]] = true;
               this.parents[neighbors[i]] = selectedVertex;
+              this.layer[neighbors[i]] = this.layer[selectedVertex] + 1;
             }
           }
         }

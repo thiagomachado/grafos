@@ -41,7 +41,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   // writing the file
   text = '';
   for (var i = 1; i < graph.parents.length; i++) {
-    text += i + ' ' + graph.parents[i] + '\n';
+    text += i + ' ' + graph.parents[i] + ' ' + graph.layer[i] + '\n';
   }
   fs.writeFile(fileDestination, text, function(err) {
     if (err) {
