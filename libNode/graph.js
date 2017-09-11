@@ -307,6 +307,73 @@ class Graph
       }
     }
   }
+
+  /**
+   * works only for list of adjacencies
+   */
+  calculateDiameter()
+  {
+    this.diameter = 0;
+    var origin = null;
+
+    for (var k = 0; k < this.nVertex; k++) {
+      origin = this.list[k];
+      var neighbors = [];
+      var graph = [];
+
+      this.queue = [];
+      this.layer = new Array(this.nVertex + 1);
+      this.layer[origin] = 0;
+
+      this.mark = new Array(this.nVertex + 1);
+      this.mark[origin] = true;
+
+      this.queue = [];
+      this.queue.push(origin);
+
+      if(this.type == 0)
+      {
+        graph = this.matrix;
+      }
+      if(this.type == 1)
+      {
+        graph = this.list;
+      }
+
+      // workaround to support getting the first element of queue
+      // array.shift moves the entire array around in order to reindex it
+      var curQueueStart = 0;
+      while (this.queue.length > curQueueStart)
+      {
+        var selectedVertex = this.queue[curQueueStart];
+        // removes element from queue
+        curQueueStart++;
+
+        if( undefined == graph[selectedVertex])
+        {
+          graph[selectedVertex] = [];
+        }
+        neighbors = graph[selectedVertex];
+
+        for (var i=0; i < neighbors.length;i++)
+        {
+          if(typeof neighbors[i] != "undefined")
+          {
+            if (this.mark[neighbors[i]] != true)
+            {
+              this.mark[neighbors[i]] = true;
+              this.queue.push(neighbors[i]);
+              this.layer[neighbors[i]] = this.layer[selectedVertex] + 1;
+              if(this.diameter < this.layer[neighbors[i]])
+              {
+                this.diameter = this.layer[neighbors[i]];
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 exports.Graph = Graph;
