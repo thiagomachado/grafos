@@ -26,7 +26,9 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graphModule = require('../libNode/graph.js');
   var graph = new graphModule.Graph(data, dataStructureType);
 
+  console.time("diameter");
   graph.calculateDiameter();
+  console.timeEnd("diameter");
 
   console.log(graph.diameter);
 });
