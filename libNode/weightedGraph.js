@@ -28,6 +28,10 @@ class WeightedGraph
       var vertex1 = parseInt(vertex[1]);
       var weight = parseInt(vertex[2]);
 
+      if (weight < 0) {
+        throw new Error('Not supported negative weight in edge ' + file[i]);
+      }
+
       if(typeof this.list[vertex0] == "undefined")
       {
         this.list[vertex0] = new Array();
