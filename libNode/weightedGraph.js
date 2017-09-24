@@ -1,3 +1,5 @@
+var Heap = require('heap');
+
 class WeightedGraph
 {
   constructor(file)
@@ -63,6 +65,56 @@ class WeightedGraph
       }
     }
     console.timeEnd('loadList');
+  }
+
+  /**
+   * search by dijkstra
+   */
+  search(origin)
+  {
+    // array that contains items such as [vertexID, distanceToOrigin, parent]
+    var vertices = new Array(this.nVertex + 1);
+
+    var heap = new Heap(function(a, b) {
+      return a[1] - b[1];
+    });
+
+    var infiniteDistance = 999999;// infinite
+
+    var vertex;
+    for (var i = 1, limit = vertices.length; i < limit; i++) {
+      vertex = [i, infiniteDistance, null];
+      vertices[i] = vertex;
+      heap.push(vertex);
+    }
+    vertices[origin][1] = 0;
+
+    // format of heap's items: [index, distance]
+    heap.updateItem(vertices[origin]);
+
+    var u;
+    var v;
+    var uDistance;
+    var vWeight;
+    var neighbors;
+    while(!heap.empty())
+    {
+      [u, uDistance] = heap.pop();
+      neighbors = this.list[u];
+
+      for (var i = 0, iLimit = neighbors.length; i < iLimit; i++) {
+        [v, vWeight] = neighbors[i];
+
+        if(vertices[v][1] > vertices[u][1] + vWeight)
+        {
+          vertices[v][1] = vertices[u][1] + vWeight;
+          vertices[v][2] = u;
+          heap.updateItem(vertices[v]);
+        }
+      }
+    }
+
+    this.resultFromSearch = vertices;
   }
 }
 
