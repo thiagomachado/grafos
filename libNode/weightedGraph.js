@@ -96,11 +96,11 @@ class WeightedGraph
     var uDistance;
     var vWeight;
     var neighbors;
-    var connectedVertex;
+    var connectedBy;
     var position
     while(heap.size() != 0)
     {
-      [u, uDistance, connectedVertex, position] = heap.pop();
+      [u, uDistance, connectedBy, position] = heap.pop();
 
       neighbors = this.list[u];
 
