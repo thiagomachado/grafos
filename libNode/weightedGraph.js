@@ -1,4 +1,4 @@
-var Heap = require('heap');
+var heapModule = require('./binaryHeap.js');
 
 class WeightedGraph
 {
@@ -73,8 +73,8 @@ class WeightedGraph
     // array that contains items such as [vertexID, distanceToOrigin, parent]
     var vertices = new Array(this.nVertex + 1);
 
-    var heap = new Heap(function(a, b) {
-      return a[1] - b[1];
+    var heap = new heapModule.BinaryHeap(function(a) {
+      return a[1];
     });
 
     var infiniteDistance = 999999;// infinite
@@ -88,14 +88,15 @@ class WeightedGraph
     vertices[origin][1] = 0;
 
     // format of heap's items: [index, distance]
-    heap.updateItem(vertices[origin]);
+    heap.remove(vertices[origin]);
+    heap.push(vertices[origin]);
 
     var u;
     var v;
     var uDistance;
     var vWeight;
     var neighbors;
-    while(!heap.empty())
+    while(heap.size() != 0)
     {
       [u, uDistance] = heap.pop();
       neighbors = this.list[u];
@@ -107,7 +108,9 @@ class WeightedGraph
         {
           vertices[v][1] = vertices[u][1] + vWeight;
           vertices[v][2] = u;
-          heap.updateItem(vertices[v]);
+
+          heap.remove(vertices[v]);
+          heap.push(vertices[v]);
         }
       }
     }
