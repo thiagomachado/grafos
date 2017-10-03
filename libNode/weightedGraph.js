@@ -7,8 +7,6 @@ class WeightedGraph
     this.load = false;
 
     this.loadGraphAsList(file);
-
-    this.prepareForSearch();
   }
 
   loadGraphAsList(file)
