@@ -29,5 +29,6 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graph = new graphModule.WeightedGraph(data);
   console.time('search');
   graph.search(origin);
+    
   console.timeEnd('search');
 });
