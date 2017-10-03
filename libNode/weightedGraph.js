@@ -81,24 +81,27 @@ class WeightedGraph
 
     var vertex;
     for (var i = 1, limit = vertices.length; i < limit; i++) {
-      vertex = [i, infiniteDistance, null];
+      // [index of this vertex, distance from origin, vertex connecting this one, position in heap ]
+      vertex = [i, infiniteDistance, null, null];
       vertices[i] = vertex;
       heap.push(vertex);
     }
     vertices[origin][1] = 0;
 
     // format of heap's items: [index, distance]
-    heap.remove(vertices[origin]);
-    heap.push(vertices[origin]);
+    heap.bubbleUpItem(vertices[origin]);
 
     var u;
     var v;
     var uDistance;
     var vWeight;
     var neighbors;
+    var connectedVertex;
+    var position
     while(heap.size() != 0)
     {
-      [u, uDistance] = heap.pop();
+      [u, uDistance, connectedVertex, position] = heap.pop();
+
       neighbors = this.list[u];
 
       for (var i = 0, iLimit = neighbors.length; i < iLimit; i++) {
@@ -109,8 +112,7 @@ class WeightedGraph
           vertices[v][1] = vertices[u][1] + vWeight;
           vertices[v][2] = u;
 
-          heap.remove(vertices[v]);
-          heap.push(vertices[v]);
+          heap.bubbleUpItem(vertices[v]);
         }
       }
     }
