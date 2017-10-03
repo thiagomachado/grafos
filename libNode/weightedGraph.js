@@ -67,10 +67,11 @@ class WeightedGraph
 
   /**
    * search by dijkstra
+   *
+   * return array of [index of this vertex, distance from origin, vertex connecting this one, position in heap ]
    */
   search(origin)
   {
-    // array that contains items such as [vertexID, distanceToOrigin, parent]
     var vertices = new Array(this.nVertex + 1);
 
     var heap = new heapModule.BinaryHeap(function(a) {
@@ -81,7 +82,6 @@ class WeightedGraph
 
     var vertex;
     for (var i = 1, limit = vertices.length; i < limit; i++) {
-      // [index of this vertex, distance from origin, vertex connecting this one, position in heap ]
       vertex = [i, infiniteDistance, null, null];
       vertices[i] = vertex;
       heap.push(vertex);
@@ -117,7 +117,7 @@ class WeightedGraph
       }
     }
 
-    this.resultFromSearch = vertices;
+    return vertices;
   }
 }
 
