@@ -78,7 +78,7 @@ class WeightedGraph
       return a[1];
     });
 
-    var infiniteDistance = 999999;// infinite
+    var infiniteDistance = Infinity;
 
     var vertex;
     for (var i = 1, limit = vertices.length; i < limit; i++) {
@@ -116,8 +116,28 @@ class WeightedGraph
         }
       }
     }
-
     return vertices;
+  }
+
+  mst()
+  {
+    var graph = this.list;
+    this.parents = new Array(nVertex + 1);
+
+    for (var i = 1; i <= this.nVertex; i++)
+    {
+      costI = Infinity; 
+      var s = [];
+     // while(!isTheSameArray(graph, s))
+
+
+    }
+
+  }
+
+  writeMSTInFile()
+  {
+
   }
 }
 
