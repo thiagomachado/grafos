@@ -23,7 +23,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   data = data.split('\n');
 
-  var graphModule = require('../libNode/graph.js');
+  var graphModule = require('../../libNode/graph.js');
   var graph = new graphModule.Graph(data, 1);
 
   console.time("connectedComponents");

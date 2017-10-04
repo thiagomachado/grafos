@@ -21,6 +21,6 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   data = data.split('\n');
 
-  var graphModule = require('../libNode/weightedGraph.js');
+  var graphModule = require('../../libNode/weightedGraph.js');
   var graph = new graphModule.WeightedGraph(data);
 });

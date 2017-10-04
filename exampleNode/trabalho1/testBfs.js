@@ -27,7 +27,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   data = data.split('\n');
 
-  var graphModule = require('../libNode/graph.js');
+  var graphModule = require('../../libNode/graph.js');
   var graph = new graphModule.Graph(data, dataStructureType);
 
   var origins = [1, 21, 66, 836, 1390, 2207, 3121, 3319, 3888, 27580]
