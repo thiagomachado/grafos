@@ -25,8 +25,11 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   data = data.split('\n');
 
-  var graphModule = require('../libNode/weightedGraph.js');
+  var graphModule = require('../../libNode/weightedGraph.js');
   var graph = new graphModule.WeightedGraph(data);
-  console.log(graph.list[1].length);
+  console.time("mst");
+    graph.mst();
+  console.timeEnd("mst");
+  console.log(graph.minTree);
   
 });

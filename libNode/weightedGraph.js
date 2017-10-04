@@ -97,7 +97,7 @@ class WeightedGraph
     var vWeight;
     var neighbors;
     var connectedBy;
-    var position
+    var position;
     while(heap.size() != 0)
     {
       [u, uDistance, connectedBy, position] = heap.pop();
@@ -122,15 +122,53 @@ class WeightedGraph
   mst()
   {
     var graph = this.list;
-    this.parents = new Array(nVertex + 1);
+    this.minTree = new Array(this.nVertex + 1);
 
+    var heap = new heapModule.BinaryHeap(function(a) {
+      return a[1];
+    });
+
+    //define all vertex with null father and infinity cost
+    var vertex;
     for (var i = 1; i <= this.nVertex; i++)
     {
-      costI = Infinity; 
-      var s = [];
-     // while(!isTheSameArray(graph, s))
+      vertex = {};
+      vertex.index = i;
+      vertex.father = null;
+      vertex.cost = Infinity;
+      this.minTree[i] = vertex;
+      heap.push(vertex);
+      console.log("minTree = " + this.minTree[i])
+    }
+    
+    //define origin
+    console.log("vertices = " + this.nVertex);
+    var origin = Math.floor((Math.random() * this.nVertex) + 1 );
+    console.log("origem = " + origin);
+    //set 0 for the cost of origin
+    this.minTree[origin].cost = 0;
 
+    //put the minimum cost in the root of heap
+    heap.bubbleUpItem( this.minTree[origin]);
 
+    var uVertex = {}
+    var uNeighbors;
+    var vIndex;
+    var vCost;
+    while(heap.size() != 0)
+    {
+      uVertex = heap.pop();
+      uNeighbors = graph[uVertex.index];
+      for(i = 0; i <uNeighbors.length; i++)
+      {
+        [vIndex, vCost] = uNeighbors[i];
+        if(this.minTree[vIndex].cost > vCost)
+        {
+          this.minTree[vIndex].father = uVertex.index;
+          this.minTree[vIndex].cost = vCost;
+          heap.bubbleUpItem( this.minTree[vIndex]);
+        }
+      }
     }
 
   }
