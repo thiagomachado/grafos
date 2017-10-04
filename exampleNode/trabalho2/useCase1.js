@@ -18,6 +18,7 @@ var files = [
   'graphs/grafo_3.txt',
   'graphs/grafo_4.txt',
   'graphs/grafo_5.txt',
+  'graphs/rede_colaboracao.txt',
 ];
 
 for (var i = 0; i < files.length; i++) {
