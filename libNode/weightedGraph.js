@@ -200,6 +200,28 @@ class WeightedGraph
   {
 
   }
+
+  getMeanDistance()
+  {
+    var nVertexAccounted = 0;
+    var totalDistanceAccounted = 0;
+
+    var vertices;
+    var origin;
+    for (var i = 1, iLimit = this.nVertex; i < iLimit; i++) {
+      origin = i;
+      vertices = this.search(origin);
+      for (var j = 1, jLimit = vertices.length; j < jLimit; j++) {
+        if(vertices[j][DISTANCE_PROP] != 0 && vertices[j][DISTANCE_PROP] != Infinity)
+        {
+          nVertexAccounted++;
+          totalDistanceAccounted += vertices[j][DISTANCE_PROP];
+        }
+      }
+    }
+
+    return totalDistanceAccounted / nVertexAccounted;
+  }
 }
 
 exports.WeightedGraph = WeightedGraph;
