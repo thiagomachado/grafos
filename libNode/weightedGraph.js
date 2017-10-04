@@ -1,5 +1,6 @@
 var heapModule = require('./binaryHeap.js');
 const DISTANCE_PROP = 1;
+const COST_PROP = DISTANCE_PROP;
 const CONNECTED_BY_PROP = 2;
 
 class WeightedGraph
@@ -122,28 +123,27 @@ class WeightedGraph
     this.minTree = new Array(this.nVertex + 1);
 
     var heap = new heapModule.BinaryHeap(function(a) {
-      return a[1];
+      return a[DISTANCE_PROP];
     });
 
     //define all vertex with null father and infinity cost
     var vertex;
-    for (var i = 1; i <= this.nVertex; i++)
+    for (var i = 1; i < this.minTree.length; i++)
     {
       vertex = {};
       vertex.index = i;
-      vertex.father = null;
-      vertex.cost = Infinity;
+      vertex[COST_PROP] = Infinity;
+      vertex.father = null; 
+      vertex.connected = false;          
       this.minTree[i] = vertex;
       heap.push(vertex);
-      console.log("minTree = " + this.minTree[i])
+     
     }
-    
-    //define origin
-    console.log("vertices = " + this.nVertex);
+        
+    //define origin   
     var origin = Math.floor((Math.random() * this.nVertex) + 1 );
-    console.log("origem = " + origin);
     //set 0 for the cost of origin
-    this.minTree[origin].cost = 0;
+    this.minTree[origin][COST_PROP] = 0;
 
     //put the minimum cost in the root of heap
     heap.bubbleUpItem( this.minTree[origin]);
@@ -155,15 +155,24 @@ class WeightedGraph
     while(heap.size() != 0)
     {
       uVertex = heap.pop();
+      uVertex.connected = true;
       uNeighbors = graph[uVertex.index];
       for(i = 0; i <uNeighbors.length; i++)
       {
         [vIndex, vCost] = uNeighbors[i];
-        if(this.minTree[vIndex].cost > vCost)
-        {
-          this.minTree[vIndex].father = uVertex.index;
-          this.minTree[vIndex].cost = vCost;
-          heap.bubbleUpItem( this.minTree[vIndex]);
+        var neighbor = this.minTree[vIndex];
+        if(neighbor[COST_PROP] > vCost && !neighbor.connected )
+        {   
+          if(heap.size() !=0)
+          {       
+            this.minTree[vIndex].father = uVertex.index;
+            this.minTree[vIndex][COST_PROP] = vCost;
+            if(this.minTree[vIndex].index != uVertex.father)
+            {
+              
+                heap.bubbleUpItem( this.minTree[vIndex]);
+              }
+            }
         }
       }
     }

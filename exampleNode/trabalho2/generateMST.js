@@ -5,7 +5,6 @@
 
 // load parameters
 var graphFilePath = process.argv[2];
-//var origin = process.argv[3];
 
 // dependencies
 fs = require('fs');
@@ -29,7 +28,7 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graph = new graphModule.WeightedGraph(data);
   console.time("mst");
     graph.mst();
-  console.timeEnd("mst");
-  console.log(graph.minTree);
+  console.timeEnd("mst");  
+  //console.log(graph.minTree);
   
 });
