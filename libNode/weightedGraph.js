@@ -1,4 +1,6 @@
 var heapModule = require('./binaryHeap.js');
+const DISTANCE_PROP = 1;
+const CONNECTED_BY_PROP = 2;
 
 class WeightedGraph
 {
@@ -75,7 +77,7 @@ class WeightedGraph
     var vertices = new Array(this.nVertex + 1);
 
     var heap = new heapModule.BinaryHeap(function(a) {
-      return a[1];
+      return a[DISTANCE_PROP];
     });
 
     var infiniteDistance = Infinity;
@@ -86,7 +88,7 @@ class WeightedGraph
       vertices[i] = vertex;
       heap.push(vertex);
     }
-    vertices[origin][1] = 0;
+    vertices[origin][DISTANCE_PROP] = 0;
 
     // format of heap's items: [index, distance]
     heap.bubbleUpItem(vertices[origin]);
@@ -107,10 +109,10 @@ class WeightedGraph
       for (var i = 0, iLimit = neighbors.length; i < iLimit; i++) {
         [v, vWeight] = neighbors[i];
 
-        if(vertices[v][1] > vertices[u][1] + vWeight)
+        if(vertices[v][DISTANCE_PROP] > vertices[u][DISTANCE_PROP] + vWeight)
         {
-          vertices[v][1] = vertices[u][1] + vWeight;
-          vertices[v][2] = u;
+          vertices[v][DISTANCE_PROP] = vertices[u][DISTANCE_PROP] + vWeight;
+          vertices[v][CONNECTED_BY_PROP] = u;
 
           heap.bubbleUpItem(vertices[v]);
         }
