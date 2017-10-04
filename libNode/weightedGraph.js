@@ -134,17 +134,20 @@ class WeightedGraph
       vertex.index = i;
       vertex[COST_PROP] = Infinity;
       vertex.father = null; 
-      vertex.connected = false;          
+      vertex.connected = false;      
+      vertex.neighbors = [];
+      vertex.degree = 0;          
       this.minTree[i] = vertex;
       heap.push(vertex);
      
     }
-        
+
     //define origin   
     var origin = Math.floor((Math.random() * this.nVertex) + 1 );
+    //console.log(origin);
     //set 0 for the cost of origin
     this.minTree[origin][COST_PROP] = 0;
-
+    this.minTree[origin].degree = -1;
     //put the minimum cost in the root of heap
     heap.bubbleUpItem( this.minTree[origin]);
 
@@ -155,6 +158,11 @@ class WeightedGraph
     while(heap.size() != 0)
     {
       uVertex = heap.pop();
+      uVertex.degree ++;
+      if(uVertex.father != null)
+      {
+        this.minTree[uVertex.father].degree ++; 
+      }
       uVertex.connected = true;
       uNeighbors = graph[uVertex.index];
       for(i = 0; i <uNeighbors.length; i++)
@@ -167,12 +175,21 @@ class WeightedGraph
           {       
             this.minTree[vIndex].father = uVertex.index;
             this.minTree[vIndex][COST_PROP] = vCost;
+            
             if(this.minTree[vIndex].index != uVertex.father)
             {
-              
+              this.minTree[vIndex].neighbors.push(uVertex.index);
+              uVertex.neighbors.push(vIndex);
                 heap.bubbleUpItem( this.minTree[vIndex]);
-              }
             }
+            else
+            {                            
+              var index = this.minTree[vIndex].neighbors.indexof(uVertex.index);
+              this.minTree[vIndex].neighbors.splice(index,1);
+              var uIndex =uVertex.neighbors.indexof(vIndex);
+              uVertex.neighbors.splice(uIndex,1);
+            }
+          }
         }
       }
     }
