@@ -1,4 +1,6 @@
 var heapModule = require('./binaryHeap.js');
+const DISTANCE_PROP = 1;
+const CONNECTED_BY_PROP = 2;
 
 class WeightedGraph
 {
@@ -13,7 +15,7 @@ class WeightedGraph
   {
     console.time('loadList');
 
-    var nVertex = parseInt(file[0]);
+    var nVertex = parseFloat(file[0]);
 
     this.nVertex = nVertex;
     this.nEdges = file.length - 2;
@@ -21,24 +23,19 @@ class WeightedGraph
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.list = new Array(nVertex + 1);
 
+    for (var i = 1; i < nVertex + 1; i++) {
+      this.list[i] = new Array();
+    }
+
     for (var i = 1; i <= this.nEdges; i++)
     {
       var vertex = file[i].split(" ");
-      var vertex0 = parseInt(vertex[0]);
-      var vertex1 = parseInt(vertex[1]);
-      var weight = parseInt(vertex[2]);
+      var vertex0 = parseFloat(vertex[0]);
+      var vertex1 = parseFloat(vertex[1]);
+      var weight = parseFloat(vertex[2]);
 
       if (weight < 0) {
         throw new Error('Not supported negative weight in edge ' + file[i]);
-      }
-
-      if(typeof this.list[vertex0] == "undefined")
-      {
-        this.list[vertex0] = new Array();
-      }
-      if(typeof this.list[vertex1] == "undefined")
-      {
-        this.list[vertex1] = new Array();
       }
 
       this.list[vertex0].push([vertex1, weight]);
@@ -75,7 +72,7 @@ class WeightedGraph
     var vertices = new Array(this.nVertex + 1);
 
     var heap = new heapModule.BinaryHeap(function(a) {
-      return a[1];
+      return a[DISTANCE_PROP];
     });
 
     var infiniteDistance = Infinity;
@@ -86,7 +83,7 @@ class WeightedGraph
       vertices[i] = vertex;
       heap.push(vertex);
     }
-    vertices[origin][1] = 0;
+    vertices[origin][DISTANCE_PROP] = 0;
 
     // format of heap's items: [index, distance]
     heap.bubbleUpItem(vertices[origin]);
@@ -107,10 +104,10 @@ class WeightedGraph
       for (var i = 0, iLimit = neighbors.length; i < iLimit; i++) {
         [v, vWeight] = neighbors[i];
 
-        if(vertices[v][1] > vertices[u][1] + vWeight)
+        if(vertices[v][DISTANCE_PROP] > vertices[u][DISTANCE_PROP] + vWeight)
         {
-          vertices[v][1] = vertices[u][1] + vWeight;
-          vertices[v][2] = u;
+          vertices[v][DISTANCE_PROP] = vertices[u][DISTANCE_PROP] + vWeight;
+          vertices[v][CONNECTED_BY_PROP] = u;
 
           heap.bubbleUpItem(vertices[v]);
         }

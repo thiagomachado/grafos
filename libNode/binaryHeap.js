@@ -2,6 +2,7 @@
  * Original heap from http://eloquentjavascript.net/1st_edition/appendix2.html
  * Modifications were made
  */
+const POSITION_PROP = 3;
 
 function BinaryHeap(scoreFunction){
   this.content = [];
@@ -11,7 +12,7 @@ function BinaryHeap(scoreFunction){
 BinaryHeap.prototype = {
   push: function(element) {
     // sets heap position
-    element[3] = this.content.length;
+    element[POSITION_PROP] = this.content.length;
     // Add the new element to the end of the array.
     this.content.push(element);
     // Allow it to bubble up.
@@ -28,7 +29,7 @@ BinaryHeap.prototype = {
     if (this.content.length > 0) {
       this.content[0] = end;
       // updates position
-      end[3] = 0;
+      end[POSITION_PROP] = 0;
       this.sinkDown(0);
     }
     //console.log('pop ' + result);
@@ -61,9 +62,9 @@ BinaryHeap.prototype = {
 
     //console.log('bubbleUpItem before' + node);
 
-    if (this.content[node[3]] != node) throw new Error('Invalid position');
+    if (this.content[node[POSITION_PROP]] != node) throw new Error('Invalid position');
 
-    this.bubbleUp(node[3]);
+    this.bubbleUp(node[POSITION_PROP]);
 
     //console.log('bubbleUpItem after' + node);
   },
@@ -90,8 +91,8 @@ BinaryHeap.prototype = {
       this.content[parentN] = element;
       this.content[n] = parent;
       // keep track of position of item
-      this.content[parentN][3] = parentN;
-      this.content[n][3] = n;
+      this.content[parentN][POSITION_PROP] = parentN;
+      this.content[n][POSITION_PROP] = n;
 
       n = parentN;
     }
@@ -133,8 +134,8 @@ BinaryHeap.prototype = {
       this.content[n] = this.content[swap];
       this.content[swap] = element;
       // keep track of position of item
-      this.content[n][3] = n;
-      this.content[swap][3] = swap;
+      this.content[n][POSITION_PROP] = n;
+      this.content[swap][POSITION_PROP] = swap;
 
       n = swap;
     }
