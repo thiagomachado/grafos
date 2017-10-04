@@ -70,10 +70,24 @@ fs.readFile(namesFile, 'utf8', function (err,data) {
     var graphModule = require('../../libNode/weightedGraph.js');
     var graph = new graphModule.WeightedGraph(data);
 
-    const DISTANCE_PROP = 1;
     vertices = graph.search(origin.vertex);
-    for (var i = 0; i < destinations.length; i++) {
-      console.log(vertices[destinations[i].vertex]);
+
+    const NAME_PROP = 0;
+    const DISTANCE_PROP = 1;
+    const CONNECTED_BY_PROP = 2;
+    /*Prints path between Dijkstra and others */
+    for (var i = destinations.length - 1; i >= 0; i--) {
+      console.log('\n\n\n');
+      console.log('Path Distance ' + vertices[destinations[i].vertex][DISTANCE_PROP]);
+      curVertex = destinations[i].vertex;
+      path = []
+      while (curVertex)
+      {
+        path.push(names[vertices[curVertex][NAME_PROP]]);
+        curVertex = vertices[curVertex][CONNECTED_BY_PROP];
+      }
+      path.reverse();
+      console.log('Path ' + path.join(', '));
     }
   });
 
