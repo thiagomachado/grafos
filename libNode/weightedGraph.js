@@ -15,7 +15,7 @@ class WeightedGraph
   {
     console.time('loadList');
 
-    var nVertex = parseInt(file[0]);
+    var nVertex = parseFloat(file[0]);
 
     this.nVertex = nVertex;
     this.nEdges = file.length - 2;
@@ -26,9 +26,9 @@ class WeightedGraph
     for (var i = 1; i <= this.nEdges; i++)
     {
       var vertex = file[i].split(" ");
-      var vertex0 = parseInt(vertex[0]);
-      var vertex1 = parseInt(vertex[1]);
-      var weight = parseInt(vertex[2]);
+      var vertex0 = parseFloat(vertex[0]);
+      var vertex1 = parseFloat(vertex[1]);
+      var weight = parseFloat(vertex[2]);
 
       if (weight < 0) {
         throw new Error('Not supported negative weight in edge ' + file[i]);
