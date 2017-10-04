@@ -15,7 +15,7 @@ class WeightedGraph
   {
     console.time('loadList');
 
-    var nVertex = parseInt(file[0]);
+    var nVertex = parseFloat(file[0]);
 
     this.nVertex = nVertex;
     this.nEdges = file.length - 2;
@@ -23,24 +23,19 @@ class WeightedGraph
     this.averageDegree = (2 * this.nEdges)/this.nVertex;
     this.list = new Array(nVertex + 1);
 
+    for (var i = 1; i < nVertex + 1; i++) {
+      this.list[i] = new Array();
+    }
+
     for (var i = 1; i <= this.nEdges; i++)
     {
       var vertex = file[i].split(" ");
-      var vertex0 = parseInt(vertex[0]);
-      var vertex1 = parseInt(vertex[1]);
-      var weight = parseInt(vertex[2]);
+      var vertex0 = parseFloat(vertex[0]);
+      var vertex1 = parseFloat(vertex[1]);
+      var weight = parseFloat(vertex[2]);
 
       if (weight < 0) {
         throw new Error('Not supported negative weight in edge ' + file[i]);
-      }
-
-      if(typeof this.list[vertex0] == "undefined")
-      {
-        this.list[vertex0] = new Array();
-      }
-      if(typeof this.list[vertex1] == "undefined")
-      {
-        this.list[vertex1] = new Array();
       }
 
       this.list[vertex0].push([vertex1, weight]);
