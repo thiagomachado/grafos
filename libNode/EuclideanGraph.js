@@ -1,18 +1,9 @@
-class WeightedGraph
+class EuclideanGraph
 {
-  constructor(file, type)
+  constructor(file)
   {
     this.load = false;
-
-    if(this.type == 0)
-    {
-      this.loadGraphAsMatrix(file);
-    }
-
-    if (this.type == 1)
-    {
-      this.loadGraphAsList(file);
-    }
+    this.loadGraphAsMatrix(file);
   }
 
   loadGraphAsMatrix(file)
@@ -35,18 +26,19 @@ class WeightedGraph
       var coordenates = file[iVertex].split(" ");
       vertex.coordenateX = parseInt(coordenates[0]);
       vertex.coordenateY = parseInt(coordenates[1]);
-      for( var iNextVertex = iVertex + 1; iNextVertex < this.nVertex; iNextVertex++)
+      for( var iNextVertex = iVertex; iNextVertex <= this.nVertex; iNextVertex++)
       {
         var nextVertex = {};
         var coordenatesNextVertex = file[iNextVertex].split(" ");
-        nextVertex.coordenateX = parseInt(coordenates[0]);
-        nextVertex.coordenateY = parseInt(coordenates[1]);
+        nextVertex.coordenateX = parseInt(coordenatesNextVertex[0]);
+        nextVertex.coordenateY = parseInt(coordenatesNextVertex[1]);
 
-        var distance = getDistance(vertex, nextVertex);
+        var distance = this.getDistance(vertex, nextVertex);
         this.matrix[iVertex][iNextVertex] = distance;
         this.matrix[iNextVertex][iVertex] = distance;
       }
     }
+
     console.timeEnd('loadMatrix');
   }
 
@@ -54,8 +46,8 @@ class WeightedGraph
   {
     // right-angled triangle
     return Math.sqrt(
-      (vertex.coordenateX - nextVertex.coordenateX)**2
-      + (vertex.coordenateY - nextVertex.coordenateY)**2
+      Math.pow(vertex.coordenateX - nextVertex.coordenateX, 2)
+      + Math.pow(vertex.coordenateY - nextVertex.coordenateY, 2)
     );
   }
 }
