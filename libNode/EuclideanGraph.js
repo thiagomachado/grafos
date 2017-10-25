@@ -56,16 +56,17 @@ class EuclideanGraph
     var markedArr = Array(this.nVertex + 1);
     var path = [];
 
-    var randomStart = 1;
-    path.push(randomStart);
-    markedArr[randomStart] = true;
+    var randomOrigin = 1;
+    path.push(randomOrigin);
+    markedArr[randomOrigin] = true;
 
-    var curVertex = randomStart;
+    var curVertex = randomOrigin;
     for (var i = 1; i < this.nVertex; i++) {
       curVertex = this.getNearestUnmarkedNeighbor(curVertex, markedArr);
       path.push(curVertex);
       markedArr[parseInt(curVertex)] = true;
     }
+    path.push(randomOrigin);
     return path;
   }
 
