@@ -24,5 +24,5 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var graphModule = require('../../libNode/EuclideanGraph.js');
   var graph = new graphModule.EuclideanGraph(data);
   var nearestNeighborCycle = graph.getNearestNeighborCycle();
-  console.log(nearestNeighborCycle);
+  console.log(nearestNeighborCycle.join(' '));
 });
