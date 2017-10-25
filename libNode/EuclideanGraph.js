@@ -84,6 +84,22 @@ class EuclideanGraph
     }
     return u;
   }
+
+  get2Opt(path)
+  {
+    for(i = 0; i < path.length - 2; i++)
+    {
+        for(j = i + 2; j < path.length; j ++)
+        {
+          originalEdgesCost = this.matrix[path[i]][path[i + 1]] + this.matrix[path[j]][path[j + 1]];
+          candidateEdgesCost = this.matrix[path[i]][path[j]] + this.matrix[path[i + 1]][path[j + 1]];
+          if(candidateEdgesCost < originalEdgesCost)
+          {
+            //invert and change
+          }  
+        }
+    }
+  }
 }
 
 exports.EuclideanGraph = EuclideanGraph;
