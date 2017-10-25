@@ -50,6 +50,39 @@ class EuclideanGraph
       + Math.pow(vertex.coordenateY - nextVertex.coordenateY, 2)
     );
   }
+
+  getNearestNeighborCycle()
+  {
+    var markedArr = Array(this.nVertex + 1);
+    var path = [];
+
+    var randomStart = 1;
+    path.push(randomStart);
+    markedArr[randomStart] = true;
+
+    var curVertex = randomStart;
+    for (var i = 1; i < this.nVertex; i++) {
+      curVertex = this.getNearestUnmarkedNeighbor(curVertex, markedArr);
+      path.push(curVertex);
+      markedArr[parseInt(curVertex)] = true;
+    }
+    return path;
+  }
+
+  getNearestUnmarkedNeighbor(v, markedArr)
+  {
+    var u = null;
+    var distU = Infinity;
+    for (var i = 1; i < this.matrix.length; i++) {
+      if(markedArr[i]) continue;
+
+      if (this.matrix[v][i] < distU) {
+        u = i;
+        distU = this.matrix[v][i];
+      }
+    }
+    return u;
+  }
 }
 
 exports.EuclideanGraph = EuclideanGraph;
