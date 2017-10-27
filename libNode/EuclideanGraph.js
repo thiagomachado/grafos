@@ -54,20 +54,21 @@ class EuclideanGraph
   getNearestNeighborCycle()
   {
     var markedArr = Array(this.nVertex + 1);
-    var path = [];
+    var predecessorArr = Array(this.nVertex + 1);
 
     var randomOrigin = 1;
-    path.push(randomOrigin);
     markedArr[randomOrigin] = true;
 
-    var curVertex = randomOrigin;
+    var previousVertex = randomOrigin;
+    var curVertex;
     for (var i = 1; i < this.nVertex; i++) {
-      curVertex = this.getNearestUnmarkedNeighbor(curVertex, markedArr);
-      path.push(curVertex);
+      curVertex = this.getNearestUnmarkedNeighbor(previousVertex, markedArr);
+      predecessorArr[curVertex] = previousVertex;
       markedArr[parseInt(curVertex)] = true;
+      previousVertex = curVertex;
     }
-    path.push(randomOrigin);
-    return path;
+    predecessorArr[randomOrigin] = previousVertex;
+    return predecessorArr;
   }
 
   getNearestUnmarkedNeighbor(v, markedArr)
