@@ -86,51 +86,20 @@ class EuclideanGraph
     return u;
   }
 
-  get2Opt(predecessorArr)
+  get2Opt(path)
   {
-
-    for(var i = 1; i <= predecessorArr.length - 1; i++)
+    for(i = 0; i < path.length - 2; i++)
     {
-      var iEdge = this.createEdge(i, predecessorArr[i]);
-      for(var j = i + 1; j <= predecessorArr.length - 1; j++)
-      {        
-        if(iEdge.originVertex != predecessorArr[j] && iEdge.endVertex != predecessorArr[j] && iEdge.endVertex != j)
+        for(j = i + 2; j < path.length; j ++)
         {
-          var jEdge = this.createEdge(j, predecessorArr[j]);
-          var iCandidateEdge = this.createEdge(iEdge.originVertex, jEdge.originVertex);
-          var jCandidateEdge = this.createEdge(iEdge.endVertex,jEdge.endVertex);
-         
-          var originalEdgesCost = iEdge.cost + jEdge.cost;
-          var candidateEdgesCost = iCandidateEdge.cost + jCandidateEdge.cost;
-          console.log('Arestas Originais:'+iEdge.originVertex+'--'+iEdge.endVertex+'/ /'+jEdge.originVertex+'--'+jEdge.endVertex+'/ /'+originalEdgesCost + ' Arestas Candidatas:'+iCandidateEdge.originVertex+'--'+iCandidateEdge.endVertex+'/ /'+jCandidateEdge.originVertex+'--'+jCandidateEdge.endVertex+'/ /' + candidateEdgesCost);
-          
+          originalEdgesCost = this.matrix[path[i]][path[i + 1]] + this.matrix[path[j]][path[j + 1]];
+          candidateEdgesCost = this.matrix[path[i]][path[j]] + this.matrix[path[i + 1]][path[j + 1]];
           if(candidateEdgesCost < originalEdgesCost)
           {
-            console.log('VAI TROCAR AS ARESTAS ABAIXO');
-            console.log('Arestas Originais:'+iEdge.originVertex+'--'+iEdge.endVertex+'/ /'+jEdge.originVertex+'--'+jEdge.endVertex+'/ /'+originalEdgesCost + ' Arestas Candidatas:'+iCandidateEdge.originVertex+'--'+iCandidateEdge.endVertex+'/ /'+jCandidateEdge.originVertex+'--'+jCandidateEdge.endVertex+'/ /' + candidateEdgesCost);
-            predecessorArr[iEdge.origin] = iCandidateEdge.endVertex;
-            predecessorArr[jEdge.origin] = iEdge.endVertex;
-            predecessorArr[iEdge.end] = jCandidateEdge.endVertex
-            //console.log('newPath '+ predecessorArr)
-          }
-            
-        }else
-        {
-          continue;
+            //invert and change
+          }  
         }
-
-      }           
     }
-    return predecessorArr;
-  }
-
-  createEdge(origin, end)
-  {
-    var edge = {};
-    edge.originVertex = origin;
-    edge.endVertex = end;
-    edge.cost = this.matrix[origin][end];
-    return edge;
   }
 }
 

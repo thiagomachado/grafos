@@ -27,19 +27,11 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
   var nearestNeighborCycle = graph.getNearestNeighborCycle();
   console.timeEnd('nearestNeighborCycle');
 
-  console.time('2opt');
-  var opt2 = graph.get2Opt(nearestNeighborCycle);
-  console.timeEnd('2opt');
-
   var curVertex = 1; // random vertex to start listing the path
   var path = [];
-  for (var i = 1; i < opt2.length; i++) {
+  for (var i = 1; i < nearestNeighborCycle.length; i++) {
     path.push(curVertex);
-    curVertex = opt2[curVertex];
+    curVertex = nearestNeighborCycle[curVertex];
   }
-  // for (var i = 1; i < nearestNeighborCycle.length; i++) {
-  //   path.push(curVertex);
-  //   curVertex = nearestNeighborCycle[curVertex];
-  // }
-   console.log(path);
+  console.log(path);
 });
