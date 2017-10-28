@@ -96,11 +96,21 @@ class EuclideanGraph
         candidateEdgesCost = this.matrix[path[i]][path[j]] + this.matrix[path[i + 1]][path[j + 1]];
         if(candidateEdgesCost < originalEdgesCost)
         {
-          //invert and change
+          this.reverseArray(path, i+1, j);
         }
       }
     }
     return path;
+  }
+
+  reverseArray(arr, start, end)
+  {
+    for (var left = start, right = end; left < right; left += 1, right -= 1)
+    {
+        var temporary = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temporary;
+    }
   }
 }
 
