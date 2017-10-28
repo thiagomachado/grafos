@@ -108,9 +108,10 @@ class EuclideanGraph
           {
             console.log('VAI TROCAR AS ARESTAS ABAIXO');
             console.log('Arestas Originais:'+iEdge.originVertex+'--'+iEdge.endVertex+'/ /'+jEdge.originVertex+'--'+jEdge.endVertex+'/ /'+originalEdgesCost + ' Arestas Candidatas:'+iCandidateEdge.originVertex+'--'+iCandidateEdge.endVertex+'/ /'+jCandidateEdge.originVertex+'--'+jCandidateEdge.endVertex+'/ /' + candidateEdgesCost);
-            predecessorArr[iEdge.origin] = iCandidateEdge.endVertex;
-            predecessorArr[jEdge.origin] = iEdge.endVertex;
-            predecessorArr[iEdge.end] = jCandidateEdge.endVertex
+
+            predecessorArr[iCandidateEdge.originVertex] = iCandidateEdge.endVertex;
+            predecessorArr[jCandidateEdge.originVertex] = jCandidateEdge.endVertex;
+
             //console.log('newPath '+ predecessorArr)
           }
             
@@ -119,7 +120,7 @@ class EuclideanGraph
           continue;
         }
 
-      }           
+      }
     }
     return predecessorArr;
   }
