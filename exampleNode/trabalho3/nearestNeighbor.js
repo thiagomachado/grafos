@@ -23,15 +23,6 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   var graphModule = require('../../libNode/EuclideanGraph.js');
   var graph = new graphModule.EuclideanGraph(data);
-  console.time('nearestNeighborCycle');
   var nearestNeighborCycle = graph.getNearestNeighborCycle();
-  console.timeEnd('nearestNeighborCycle');
-
-  var curVertex = 1; // random vertex to start listing the path
-  var path = [];
-  for (var i = 1; i < nearestNeighborCycle.length; i++) {
-    path.push(curVertex);
-    curVertex = nearestNeighborCycle[curVertex];
-  }
-  console.log(path);
+  console.log(nearestNeighborCycle.join(' '));
 });
