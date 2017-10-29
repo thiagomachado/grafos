@@ -30,6 +30,10 @@ fs.readFile(graphFilePath, 'utf8', function (err,data) {
 
   console.time('2OPT');
   var opt2Cycle = graph.get2Opt(nearestNeighborCycle);
+  for(var i = 0; i < 6; i++)
+  {
+    opt2Cycle = graph.get2Opt(opt2Cycle);
+  }  
   console.timeEnd('2OPT');
 
   opt2Cycle.pop(); // removes last element, which is equal to the first
